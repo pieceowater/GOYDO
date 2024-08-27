@@ -1,38 +1,31 @@
 package main
 
 import (
+	"GOYDO/src/cfg"
 	_ "GOYDO/src/docs"
-	"GOYDO/src/modules/task/models"
 	"GOYDO/src/routes"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	swaggerFiles "github.com/swaggo/files"
 	"github.com/swaggo/gin-swagger"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
+	"log"
 )
 
-var db *gorm.DB
-
 func main() {
-	var err error
-	dsn := "host=localhost user=postgres password=dima3raza dbname=goydo port=5432 sslmode=disable"
-	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	err := godotenv.Load()
 	if err != nil {
-		panic("failed to connect database")
+		log.Fatalf("Error loading .env file")
 	}
 
-	err = db.AutoMigrate(&models.Task{})
-	if err != nil {
-		panic("failed to migrate database")
-	}
+	cfg.InitDB()
 
 	r := gin.Default()
-	routes.SetupRoutes(r, db)
+	routes.SetupRoutes(r, cfg.DB)
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	err = r.Run(":3000")
 	if err != nil {
-		panic("failed to run server")
+		log.Fatalf("failed to run server: %v", err)
 	}
 }

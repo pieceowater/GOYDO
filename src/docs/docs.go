@@ -68,7 +68,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Task"
+                            "$ref": "#/definitions/dto.CreateTaskDTO"
                         }
                     }
                 ],
@@ -115,7 +115,7 @@ const docTemplate = `{
                 "summary": "Get a task by ID",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "Task ID",
                         "name": "id",
                         "in": "path",
@@ -154,7 +154,7 @@ const docTemplate = `{
                 "summary": "Update a task",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "Task ID",
                         "name": "id",
                         "in": "path",
@@ -166,7 +166,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Task"
+                            "$ref": "#/definitions/dto.UpdateTaskDTO"
                         }
                     }
                 ],
@@ -220,7 +220,7 @@ const docTemplate = `{
                 "summary": "Delete a task",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "Task ID",
                         "name": "id",
                         "in": "path",
@@ -245,6 +245,51 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "dto.CreateTaskDTO": {
+            "type": "object",
+            "required": [
+                "title"
+            ],
+            "properties": {
+                "deadline": {
+                    "description": "The deadline for the task\nexample: \"2024-12-31\"",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "The description of the task\nexample: \"This is a detailed description of the task.\"",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "The title of the task\nexample: \"Task Title\"",
+                    "type": "string"
+                },
+                "urgent": {
+                    "description": "Indicates if the task is urgent\nexample: true",
+                    "type": "boolean"
+                }
+            }
+        },
+        "dto.UpdateTaskDTO": {
+            "type": "object",
+            "properties": {
+                "deadline": {
+                    "description": "The deadline for the task\nexample: \"2024-12-31\"",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "The description of the task\nexample: \"This is an updated description of the task.\"",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "The title of the task\nexample: \"Updated Task Title\"",
+                    "type": "string"
+                },
+                "urgent": {
+                    "description": "Indicates if the task is urgent\nexample: true",
+                    "type": "boolean"
+                }
+            }
+        },
         "models.Task": {
             "type": "object",
             "required": [
