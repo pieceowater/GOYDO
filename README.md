@@ -4,6 +4,12 @@ GO-y-DO is a simple TODO manager built using GOLang, Gin, GORM, and PostgreSQL. 
 
 ## Getting Started
 
+### Quick Start
+
+```bash
+docker-compose up --build -d
+```
+
 ### Prerequisites
 
 - [Go](https://golang.org/doc/install) (version 1.18+)

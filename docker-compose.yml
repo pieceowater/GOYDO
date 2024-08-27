@@ -1,0 +1,39 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: goydo-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pieceowater
+      POSTGRES_DB: goydo
+    ports:
+      - "5021:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - goydo-network
+
+  app:
+    build: .
+    container_name: goydo-app
+    environment:
+      DATABASE_URL: postgres://postgres:pieceowater@postgres:5432/goydo?sslmode=disable
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - goydo-network
+
+networks:
+  goydo-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
