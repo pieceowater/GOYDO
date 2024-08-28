@@ -7,8 +7,8 @@ import (
 )
 
 func SetupRoutes(r *gin.Engine, db *gorm.DB) {
-	taskService := &task.Service{DB: db}
-	taskController := &task.Controller{Service: *taskService}
+	taskService := &task.TaskService{DB: db}
+	taskController := &task.TaskController{Service: *taskService}
 
 	taskRoutes := r.Group("/tasks")
 	{

@@ -8,9 +8,9 @@ import (
 	"strconv"
 )
 
-// Controller handles operations related to tasks.
-type Controller struct {
-	Service Service
+// TaskController handles operations related to tasks.
+type TaskController struct {
+	Service TaskService
 }
 
 // CreateTask godoc
@@ -24,7 +24,7 @@ type Controller struct {
 // @Failure      400 {object} map[string]string
 // @Failure      500 {object} map[string]string
 // @Router       /tasks [post]
-func (ctrl *Controller) CreateTask(c *gin.Context) {
+func (ctrl *TaskController) CreateTask(c *gin.Context) {
 	var createTaskDTO dto.CreateTaskDTO
 	if err := c.ShouldBindJSON(&createTaskDTO); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -55,7 +55,7 @@ func (ctrl *Controller) CreateTask(c *gin.Context) {
 // @Success      200 {array} models.Task
 // @Failure      500 {object} map[string]string
 // @Router       /tasks [get]
-func (ctrl *Controller) GetTasks(c *gin.Context) {
+func (ctrl *TaskController) GetTasks(c *gin.Context) {
 	tasks, err := ctrl.Service.GetTasks()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -74,7 +74,7 @@ func (ctrl *Controller) GetTasks(c *gin.Context) {
 // @Success      200 {object} models.Task
 // @Failure      404 {object} map[string]string
 // @Router       /tasks/{id} [get]
-func (ctrl *Controller) GetTask(c *gin.Context) {
+func (ctrl *TaskController) GetTask(c *gin.Context) {
 	id := c.Param("id")
 
 	task, err := ctrl.Service.GetTask(id)
@@ -98,7 +98,7 @@ func (ctrl *Controller) GetTask(c *gin.Context) {
 // @Failure      404 {object} map[string]string
 // @Failure      500 {object} map[string]string
 // @Router       /tasks/{id} [put]
-func (ctrl *Controller) UpdateTask(c *gin.Context) {
+func (ctrl *TaskController) UpdateTask(c *gin.Context) {
 	idStr := c.Param("id")
 	id, err := strconv.ParseUint(idStr, 10, 32)
 	if err != nil {
@@ -138,7 +138,7 @@ func (ctrl *Controller) UpdateTask(c *gin.Context) {
 // @Success      204
 // @Failure      404 {object} map[string]string
 // @Router       /tasks/{id} [delete]
-func (ctrl *Controller) DeleteTask(c *gin.Context) {
+func (ctrl *TaskController) DeleteTask(c *gin.Context) {
 	id := c.Param("id")
 
 	if err := ctrl.Service.DeleteTask(id); err != nil {
